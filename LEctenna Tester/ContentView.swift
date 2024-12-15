@@ -2,87 +2,154 @@
 //  ContentView.swift
 //  LEctenna Tester
 //
-//  Created by administrator on 05/02/2022.
+//  Created by Sirius Noël Maria Vollenweider on 05/02/2022.
 //
 
 import SwiftUI
-import CoreData
+import WebKit
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+   
+    
+    @State private var showWebView = false
+    @State    private var showWebView2 = false
+    @State    private var showWebView3 = false
+    @State    private var showWebView4 = false
+    @State    private var showcontentView = false
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
-                    }
-                }
-                .onDelete(perform: deleteItems)
+    
+    
+    
+        VStack {
+            VStack {
+                VStack {
+                    VStack {
+                        VStack {
+                            GroupBox(label:
+                                        
+                                        Text("LEctenna Tester")
+                                .bold())
+                            {Text("Free and open source software for STEM")
+                                
+                                Button {
+                                    showWebView.toggle()
+                                } label: {
+                                    Text("Start")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                    
+                                    
+                                }
+                                .sheet(isPresented: $showWebView) {
+                                    Text("Swipe down to Stop")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                        .accessibilityLabel("Label")
+                                        .popover(isPresented: .constant(false)) {
+                                            
+                                            
+                                        }
+                                    WebView(url: URL(string: "https://lectenna.com/index.php/letu/")!)
+                                }
+                                
+                                
+                                
+                                Button {
+                                    showWebView2.toggle()
+                                } label: {
+                                    Text("Info")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                        .accessibilityLabel("Label")
+                                        .popover(isPresented: .constant(false)) {
+                                            
+                                        }
+                                    
+                                }
+                                .sheet(isPresented: $showWebView2) {
+                                    
+                                    Text("Swipe down to go back to LEctenna Tester")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                        .accessibilityLabel("Label")
+                                        .popover(isPresented: .constant(false)) {
+                                            
+                                            
+                                        }
+                                    
+                                    
+                                    WebView(url: URL(string: "https://www.nrl.navy.mil/STEM/LEctenna-Challenge/")!)
+                                    
+                                    
+                                    
+                                    
+                                }
+                                
+                                
+                                
+                                
+                                Button {
+                                    showWebView3.toggle()
+                                } label: {
+                                    Text("Help")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                        .accessibilityLabel(/*@START_MENU_TOKEN@*/"Label"/*@END_MENU_TOKEN@*/)
+                                        .popover(isPresented: .constant(false)) {
+                                            
+                                        }
+                                    
+                                }
+                                .sheet(isPresented: $showWebView3) {
+                                    Text("Swipe down to go back to LEctenna Tester")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                        .accessibilityLabel("Label")
+                                        .popover(isPresented: .constant(false)) {
+                                            
+                                            
+                                        }
+                                    
+                                    
+                                    WebView(url: URL(string: "https://lectenna.com/index.php/faq-help-center")!)
+                                    
+                                }
+                                
+                                Button {
+                                    showWebView4.toggle()
+                                } label: {
+                                    Text("Contact Developer")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                        .accessibilityLabel(/*@START_MENU_TOKEN@*/"Label"/*@END_MENU_TOKEN@*/)
+                                        .popover(isPresented: .constant(false)) {
+                                            
+                                        }
+                                    
+                                }
+                                .sheet(isPresented: $showWebView4) {
+                                    Text("Swipe down to go back to LEctenna Tester")
+                                        .multilineTextAlignment(.center)
+                                        .padding(.all)
+                                        .accessibilityLabel("Label")
+                                        .popover(isPresented: .constant(false)) {
+                                            
+                                            
+                                        }
+                                    
+                                    
+                                    WebView(url: URL(string: "https://lectenna.com/index.php/contact-developer")!)
+                                    
+                                }
+                                
+                            }}}
+                
+                }}}
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-}
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
+            
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        ContentView().padding([.top, .leading, .trailing]).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
+            }

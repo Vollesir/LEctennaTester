@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 @main
 struct LEctenna_TesterApp: App {
     let persistenceController = PersistenceController.shared
